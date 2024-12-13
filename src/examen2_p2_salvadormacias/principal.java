@@ -4,6 +4,11 @@
  */
 package examen2_p2_salvadormacias;
 
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.ObjectOutputStream;
+import javax.swing.JFileChooser;
+import javax.swing.JOptionPane;
 import javax.swing.JProgressBar;
 import javax.swing.SwingUtilities;
 
@@ -39,6 +44,11 @@ public class principal extends javax.swing.JFrame {
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
         btn_cargarArchivo.setText("Cargar Archivo");
+        btn_cargarArchivo.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                btn_cargarArchivoMouseClicked(evt);
+            }
+        });
 
         boton_simulacion.setText("iniciar simulacion");
         boton_simulacion.addMouseListener(new java.awt.event.MouseAdapter() {
@@ -102,8 +112,10 @@ public class principal extends javax.swing.JFrame {
 
                 }
             }
+            
 
         });
+        progress_bar1.start();
 
         Thread progress_bar2 = new Thread(() -> {
             int cont = 0;
@@ -120,6 +132,8 @@ public class principal extends javax.swing.JFrame {
                 }
             }
         });
+                progress_bar2.start();
+
 
         Thread progress_bar3 = new Thread(() -> {
             int cont = 0;
@@ -136,6 +150,8 @@ public class principal extends javax.swing.JFrame {
                 }
             }
         });
+                progress_bar3.start();
+
 
         Thread progress_bar4 = new Thread(() -> {
             int cont = 0;
@@ -152,14 +168,35 @@ public class principal extends javax.swing.JFrame {
                 }
             }
         });
-        progress_bar1.start();
-        progress_bar2.start();
-        progress_bar3.start();
         progress_bar4.start();
 
     
     // TODO add your handling code here:
     }//GEN-LAST:event_boton_simulacionMouseClicked
+
+    private void btn_cargarArchivoMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btn_cargarArchivoMouseClicked
+        // TODO add your handling code here:
+ 
+        
+        
+        JFileChooser filechooser = new JFileChooser();
+        
+        int op = filechooser.showSaveDialog(this);
+        
+        if(op == JFileChooser.APPROVE_OPTION){
+            File seleccionado = filechooser.getSelectedFile();
+            try{
+                  FileOutputStream fs = new FileOutputStream(seleccionado);
+                  ObjectOutputStream objectWritter = new ObjectOutputStream(fs);
+                  objectWritter.writeObject(btn_cargarArchivo); 
+                  objectWritter.close();
+                  JOptionPane.showMessageDialog(this,"Se guardo el archivo");
+            }catch(Exception e){
+                System.out.println("Ocurrio un error ");
+                System.out.println(e);
+            }
+        }
+    }//GEN-LAST:event_btn_cargarArchivoMouseClicked
 
 /**
  * @param args the command line arguments
